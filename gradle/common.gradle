@@ -1,0 +1,61 @@
+// cache by default changing modules (like SNAPSHOTS)
+
+configurations.all {
+    resolutionStrategy {
+        cacheChangingModulesFor((cacheChangingModules ? 5 * 60 : 0), 'seconds')
+    }
+}
+
+// pass all -Dsc. config to app
+System.properties.keySet().each { key ->
+    if (key.startsWith('sc')) {
+        bootRun { systemProperty key, System.properties.getProperty(key) }
+        test { systemProperty key, System.properties.getProperty(key) }
+        integrationTest { systemProperty key, System.properties.getProperty(key) }
+    }
+}
+
+// use UTC timezone by default
+tasks.withType(JavaExec) {
+    systemProperty 'user.timezone', 'UTC'
+}
+
+bootRun {
+    jvmArgs('-Dspring.output.ansi.enabled=always')
+    addResources = true
+}
+
+integrationTest {
+    jvmArgs('-Dspring.output.ansi.enabled=always')
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = gradleWrapperVersion
+}
+
+// proxy mode
+bootRun { systemProperty 'sc.noProxy', noProxy.toString() }
+integrationTest { systemProperty 'sc.noProxy', noProxy.toString() }
+
+if (bigMemory) {
+    bootRun {
+        minHeapSize = '1g'
+        maxHeapSize = '4g'
+    }
+    test {
+        minHeapSize = '1g'
+        maxHeapSize = '4g'
+    }
+    integrationTest {
+        minHeapSize = '1g'
+        maxHeapSize = '4g'
+    }
+}
+
+war.archiveName = 'app.war'
+
+test {
+    filter {
+        includeTestsMatching '*Spec'
+    }
+}

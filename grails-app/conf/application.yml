@@ -1,0 +1,10 @@
+info:
+    app:
+        name: 'amor-api'
+        version: '@info.app.version@'
+        grailsVersion: '@info.app.grailsVersion@'
+
+grails:
+    profile: web
+    codegen:
+        defaultPackage: 'ru.melodrom.amor'

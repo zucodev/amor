@@ -1,0 +1,93 @@
+buildscript {
+    ext {
+        jansiVersion = project.jansiVersion
+        grailsVersion = project.grailsVersion
+    }
+    repositories {
+        mavenLocal()
+        maven { url "https://repo.grails.org/grails/core" }
+    }
+    dependencies {
+        classpath "org.fusesource.jansi:jansi:$jansiVersion"
+        classpath "org.grails:grails-gradle-plugin:$grailsVersion"
+    }
+}
+
+import org.springframework.util.SocketUtils
+
+import static org.fusesource.jansi.Ansi.Color.GREEN
+import static org.fusesource.jansi.Ansi.Color.RED
+import static org.fusesource.jansi.Ansi.ansi
+
+// CONFIGURATION
+
+boolean noProxy = true
+noProxy = System.getenv('NO_PROXY') ? System.getenv('NO_PROXY') == 'true' : noProxy
+noProxy = System.properties.getProperty('sc.noProxy') ? System.properties.getProperty('sc.noProxy') == 'true' : noProxy
+
+boolean bigMemory = (System.properties.getProperty('sc.bigMemory') == 'true' || System.properties.hasProperty('sc.bigMemory'))
+
+
+boolean cacheChangingModules = true
+
+boolean flywayEnabled = true
+flywayEnabled = System.getenv('FLYWAY_ENABLED') ? Boolean.parseBoolean(System.getenv('FLYWAY_ENABLED')) : flywayEnabled
+flywayEnabled = System.properties.getProperty('sc.flyway') ? System.properties.getProperty('sc.flyway') == 'true' : flywayEnabled
+
+String flywayLocation = 'classpath:db/migration/amor'
+flywayLocation = System.getenv('FLYWAY_LOCATION') ? System.getenv('FLYWAY_LOCATION') : flywayLocation
+
+
+int postgresPort = 5432
+String databaseName = System.properties.getProperty('grails.env') == 'test' ? 'amor_test' : 'amor'
+String datasourceUsername = 'postgres'
+String datasourcePassword = ''
+
+databaseName = System.getenv('DATABASE_NAME') ?: databaseName
+datasourceUsername = System.getenv('DATASOURCE_USERNAME') ?: datasourceUsername
+datasourcePassword = System.getenv('DATASOURCE_PASSWORD') ?: datasourcePassword
+
+String datasourceUrl = System.getenv('DATASOURCE_URL') ?: "jdbc:postgresql://127.0.0.1:$postgresPort/${databaseName}"
+
+
+int redisPort = 6379
+
+// @end CONFIGURATION
+
+// export variables
+project.ext.set('noProxy', noProxy)
+project.ext.set('bigMemory', bigMemory)
+project.ext.set('cacheChangingModules', cacheChangingModules)
+project.ext.set('flywayEnabled', flywayEnabled)
+project.ext.set('flywayLocations', [flywayLocation])
+project.ext.set('postgresPort', postgresPort)
+project.ext.set('redisPort', redisPort)
+project.ext.set('databaseName', databaseName)
+project.ext.set('datasourceUsername', datasourceUsername)
+project.ext.set('datasourcePassword', datasourcePassword)
+project.ext.set('datasourceUrl', datasourceUrl)
+
+// CONFIG dump
+
+if (noProxy) {
+    System.properties.remove('socksProxyHost')
+    System.properties.remove('socksProxyPort')
+
+    System.properties.remove('http.proxyHost')
+    System.properties.remove('http.proxyPort')
+
+    System.properties.remove('https.proxyHost')
+    System.properties.remove('https.proxyPort')
+}
+
+print 'No Proxy mode: '
+print ansi().fg(noProxy ? GREEN : RED).a(noProxy ? 'ENABLED' : 'DISABLED').reset().newline().newline()
+
+print 'Cache changing modules: '
+print ansi().fg(cacheChangingModules ? GREEN : RED).a(cacheChangingModules ? 'ENABLED' : 'DISABLED').reset().newline().newline()
+
+print 'Big memory mode: '
+print ansi().fg(bigMemory ? GREEN : RED).a(bigMemory ? 'ENABLED' : 'DISABLED').reset().newline().newline()
+
+print 'Flyway status: '
+print ansi().fg(flywayEnabled ? GREEN : RED).a(flywayEnabled ? 'ENABLED' : 'DISABLED').reset().newline().newline()

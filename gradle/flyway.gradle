@@ -1,0 +1,25 @@
+/*
+ *  Usage:
+ *      ./gradlew flywayMigrate -i
+ */
+
+flyway {
+    user = datasourceUsername
+    password = datasourcePassword
+    url = datasourceUrl
+    locations = flywayLocations
+    placeholderReplacement = false
+}
+
+
+if (flywayEnabled) {
+    flywayMigrate {
+        dependsOn processResources
+    }
+    bootRun {
+        dependsOn flywayMigrate
+    }
+    integrationTest {
+        dependsOn flywayMigrate
+    }
+}

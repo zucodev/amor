@@ -1,0 +1,25 @@
+// Gradle
+project.ext.set('gradleWrapperVersion', project.gradleWrapperVersion)
+project.ext.set('gradleCoberturaVersion', project.gradleCoberturaVersion)
+project.ext.set('gradleDockerVersion', project.gradleDockerVersion)
+
+// Grails core
+project.ext.set('grailsVersion', project.grailsVersion)
+project.ext.set('gormVersion', project.gormVersion)
+project.ext.set('assetPipelineVersion', project.assetPipelineVersion)
+
+// Grails plugins
+project.ext.set('sentryPluginVersion', project.sentryPluginVersion)
+project.ext.set('newrelicPluginVersion', project.newrelicPluginVersion)
+project.ext.set('quartzPluginVersion', project.quartzPluginVersion)
+project.ext.set('springSecurityCorePluginVersion', project.springSecurityCorePluginVersion)
+project.ext.set('springSecurityRestPluginVersion', project.springSecurityRestPluginVersion)
+
+// libraries
+project.ext.set('jansiVersion', project.jansiVersion)
+project.ext.set('logstashLogbackEncoderVersion', project.logstashLogbackEncoderVersion)
+project.ext.set('hibernateVersion', project.hibernateVersion)
+project.ext.set('hikariCpVersion', project.hikariCpVersion)
+project.ext.set('postgresqlVersion', project.postgresqlVersion)
+project.ext.set('jooqVersion', project.jooqVersion)
+project.ext.set('jsoupVersion', project.jsoupVersion)
