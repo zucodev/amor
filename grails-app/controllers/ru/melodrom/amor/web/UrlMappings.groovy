@@ -7,6 +7,7 @@ class UrlMappings {
     static mappings = {
         // AUTH
         '/api/auth/ajaxLogin'(controller: 'auth', action: 'ajaxLogin')
+        '/api/auth/ajaxLogout'(controller: 'auth', action: 'ajaxLogout')
         '/api/auth/check'(controller: 'auth', action: 'check')
         '/api/auth/register'(controller: 'auth', action: 'register')
 

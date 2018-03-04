@@ -28,9 +28,10 @@ public class CookieNames {
 
         if (environment.equals(Environment.PRODUCTION)) {
             return cookieName + postfix;
+        } else {
+            // dev mode
+            return cookieName + postfix + "_dev";
         }
-        // dev mode
-        return cookieName + postfix;
     }
 }
 

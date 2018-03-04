@@ -2,8 +2,11 @@ package ru.melodrom.amor.auth
 
 import groovy.transform.CompileStatic
 import org.springframework.http.HttpStatus
+import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
 import ru.melodrom.amor.Wallet
 import ru.melodrom.amor.WalletService
+import ru.melodrom.amor.constants.CookieNames
 import ru.melodrom.amor.constants.ErrorCodes
 import ru.melodrom.amor.helpers.ObjectConverter
 import ru.melodrom.amor.security.*
@@ -62,7 +65,6 @@ class AuthController implements RestControllerHelperTrait {
             Map result = [
                     user     : user ? ObjectConverter.userInfo(user) : {},
                     roles    : user ? user.getAuthorities().collect { it.authority } as Set : [],
-                    wallet   : wallet?.address,
                     errorCode: errorCode
             ]
 
@@ -94,6 +96,17 @@ class AuthController implements RestControllerHelperTrait {
 
             renderJson(result, errorCode ? HttpStatus.CONFLICT : HttpStatus.OK)
         }
+    }
+
+    def ajaxLogout() {
+        AppUser user = (AppUser) checkAuthentication()
+        if (user) {
+            CookieClearingLogoutHandler cookieClearingLogoutHandler = new CookieClearingLogoutHandler(CookieNames.rememberMe);
+            SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
+            cookieClearingLogoutHandler.logout(request, response, null);
+            securityContextLogoutHandler.logout(request, response, null);
+        }
+        renderJson([], HttpStatus.OK)
     }
 
     def check() {
