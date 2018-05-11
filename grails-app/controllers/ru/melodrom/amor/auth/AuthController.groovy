@@ -101,7 +101,7 @@ class AuthController implements RestControllerHelperTrait {
     def ajaxLogout() {
         AppUser user = (AppUser) checkAuthentication()
         if (user) {
-            CookieClearingLogoutHandler cookieClearingLogoutHandler = new CookieClearingLogoutHandler(CookieNames.rememberMe);
+            CookieClearingLogoutHandler cookieClearingLogoutHandler = new CookieClearingLogoutHandler(CookieNames.rememberMe, CookieNames.session);
             SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
             cookieClearingLogoutHandler.logout(request, response, null);
             securityContextLogoutHandler.logout(request, response, null);

@@ -27,7 +27,7 @@ beans = {
     // need for Spring Session (+ Redis)
     cookieSerializer(DefaultCookieSerializer) {
         cookieName = 'amor_session'
-        domainName = 'localhost'
+        domainName = 'amir.melodrom.ru'
         cookiePath = '/'
     }
 

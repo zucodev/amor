@@ -98,6 +98,7 @@ grails {
             ]
 
             filterChain.chainMap = [
+                    [pattern: '/socket.io/**', filters: 'none'],
                     [pattern: '/assets/**', filters: 'none'],
                     [pattern: '/errors/**', filters: 'none'],
                     [pattern: '/errors', filters: 'none'],
@@ -108,7 +109,7 @@ grails {
                     [pattern: '/**/images/**', filters: 'none'],
                     [pattern: '/**/favicon.ico', filters: 'none'],
                     [pattern: '/favicon.ico', filters: 'none'],
-                    [pattern: '/api/**', filters: 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter']
+                    [pattern: '/**', filters: 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter']
                     //[pattern: '/api/**', filters: 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter']
                     //[pattern: '/api/**', filters: 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter']
             ]
